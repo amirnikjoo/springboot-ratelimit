@@ -1,4 +1,4 @@
-package com.efarda.sample.exception;
+package com.efarda.exception;
 
 public class DataNotFound extends Exception {
     String data;

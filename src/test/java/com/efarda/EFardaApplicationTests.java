@@ -1,10 +1,10 @@
-package com.efarda.sample;
+package com.efarda;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SampleApplicationTests {
+class EFardaApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,6 +1,6 @@
-package com.efarda.sample.exception;
+package com.efarda.exception;
 
-import com.efarda.sample.dto.ErrorDetails;
+import com.efarda.dto.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,13 +1,13 @@
-package com.efarda.sample.controller;
+package com.efarda.controller;
 
-import com.efarda.sample.dto.UserDto;
-import com.efarda.sample.exception.DataNotFound;
-import com.efarda.sample.service.UserService;
+import com.efarda.domain.User;
+import com.efarda.dto.UserDto;
+import com.efarda.exception.DataNotFound;
+import com.efarda.service.UserService;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -20,23 +20,24 @@ class UserController {
 
     private final Bucket bucket;
 
-    public UserController() {
+    public UserController(UserService userService) {
+        this.userService = userService;
         Bandwidth limit = Bandwidth.classic(1, Refill.greedy(1, Duration.ofSeconds(10)));
         this.bucket = Bucket.builder()
                 .addLimit(limit)
                 .build();
     }
 
-    @Autowired
-    UserService userService;
+    final UserService userService;
 
     @GetMapping("/all")
-    List<UserDto> all() {
+    List<User> all() {
         return userService.allUsers();
     }
 
     @PostMapping("/add")
-    void add(@RequestBody UserDto user) throws DataNotFound {
+    void add(@RequestBody User user) throws DataNotFound {
+        log.info("Add user: {}", Thread.currentThread());
         userService.addUser(user);
     }
 
