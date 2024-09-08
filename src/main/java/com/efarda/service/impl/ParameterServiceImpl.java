@@ -1,12 +1,8 @@
 package com.efarda.service.impl;
 
 import com.efarda.domain.Parameter;
-import com.efarda.domain.User;
-import com.efarda.exception.DataNotFound;
 import com.efarda.repository.ParameterRepository;
-import com.efarda.repository.UserRepository;
 import com.efarda.service.ParameterService;
-import com.efarda.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,6 +22,9 @@ public class ParameterServiceImpl implements ParameterService {
 
     @Override
     public List<Parameter> getParameterByGroupId(Long groupId) {
+        Map<Long, Parameter> parameterMap = getParameterMap(groupId);
+        parameterMap.entrySet()
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
         return (List<Parameter>) parameterRepository.findAllByGroupId(groupId);
     }
 
@@ -38,9 +37,11 @@ public class ParameterServiceImpl implements ParameterService {
     }
 
     @Override
+    @Cacheable(value = "parameterCache", key = "#groupId")
     public Map<Long, Parameter> getParameterMap(Long groupId) {
-       List<Parameter> parameters =  (List<Parameter>) parameterRepository.findAllByGroupId(groupId);
-       return parameters.stream().collect(Collectors.toMap(Parameter::getId, p -> p));
+        log.info("inside getParameterMap");
+        List<Parameter> parameters = (List<Parameter>) parameterRepository.findAllByGroupId(groupId);
+        return parameters.stream().collect(Collectors.toMap(Parameter::getId, p -> p));
     }
 
 }

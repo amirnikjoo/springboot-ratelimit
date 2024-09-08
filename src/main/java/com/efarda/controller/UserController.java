@@ -1,16 +1,11 @@
 package com.efarda.controller;
 
 import com.efarda.domain.User;
-import com.efarda.dto.UserDto;
 import com.efarda.exception.DataNotFound;
 import com.efarda.service.UserService;
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -18,14 +13,14 @@ import java.util.List;
 @Slf4j
 class UserController {
 
-    private final Bucket bucket;
+//    private final Bucket bucket;
 
     public UserController(UserService userService) {
         this.userService = userService;
-        Bandwidth limit = Bandwidth.classic(1, Refill.greedy(1, Duration.ofSeconds(10)));
-        this.bucket = Bucket.builder()
-                .addLimit(limit)
-                .build();
+//        Bandwidth limit = Bandwidth.classic(1, Refill.greedy(1, Duration.ofSeconds(10)));
+//        this.bucket = Bucket.builder()
+//                .addLimit(limit)
+//                .build();
     }
 
     final UserService userService;
@@ -43,12 +38,14 @@ class UserController {
 
     @GetMapping("/hello")
     public String sayHello(@RequestHeader("X-API-KEY") String apiKey) {
-        if (bucket.tryConsume(1)) {
-            log.error("Hello, World!");
-            return "Hello, World!";
-        } else {
-            log.error("too many requests");
-            return "Too many requests - try again later.";
-        }
+        return "Hello, World!";
+
+//        if (bucket.tryConsume(1)) {
+//            log.error("Hello, World!");
+//            return "Hello, World!";
+//        } else {
+//            log.error("too many requests");
+//            return "Too many requests - try again later.";
+//        }
     }
 }

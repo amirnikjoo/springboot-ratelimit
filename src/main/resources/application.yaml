@@ -3,10 +3,13 @@ spring:
     name: eFarda1
 
   cache:
-    cache-names:
-      - rate-limit-buckets
-    caffeine:
-      spec: maximumSize=100000,expireAfterAccess=3600s
+    #    cache-names:
+    #      - rate-limit-buckets
+    #    caffeine:
+    #      spec: maximumSize=100000,expireAfterAccess=3600s
+
+    jcache:
+      config: classpath:ehcache1.xml
 
   datasource:
     url: jdbc:mariadb://localhost:3307/amir
@@ -27,29 +30,29 @@ spring:
     hibernate:
       ddl-auto: none
 
-bucket4j:
-  enabled: true
-  filters:
-    - cache-name: rate-limit-buckets
-      url: /api/v1/area.*
-      strategy: first
-      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
-      rate-limits:
-        - cache-key: "getHeader('X-api-key')"
-          execute-condition: "getHeader('X-api-key').startsWith('PX001-')"
-          bandwidths:
-            - capacity: 100
-              time: 1
-              unit: hours
-        - cache-key: "getHeader('X-api-key')"
-          execute-condition: "getHeader('X-api-key').startsWith('BX001-')"
-          bandwidths:
-            - capacity: 40
-              time: 1
-              unit: hours
-        - cache-key: "getHeader('X-api-key')"
-          bandwidths:
-            - capacity: 20
-              time: 1
-              unit: hours
+#bucket4j:
+#  enabled: true
+#  filters:
+#    - cache-name: rate-limit-buckets
+#      url: /api/v1/area.*
+#      strategy: first
+#      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+#      rate-limits:
+#        - cache-key: "getHeader('X-api-key')"
+#          execute-condition: "getHeader('X-api-key').startsWith('PX001-')"
+#          bandwidths:
+#            - capacity: 100
+#              time: 1
+#              unit: hours
+#        - cache-key: "getHeader('X-api-key')"
+#          execute-condition: "getHeader('X-api-key').startsWith('BX001-')"
+#          bandwidths:
+#            - capacity: 40
+#              time: 1
+#              unit: hours
+#        - cache-key: "getHeader('X-api-key')"
+#          bandwidths:
+#            - capacity: 20
+#              time: 1
+#              unit: hours
 

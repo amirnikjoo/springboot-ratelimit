@@ -1,18 +1,15 @@
 package com.efarda.controller;
 
 import com.efarda.domain.Parameter;
-import com.efarda.domain.User;
-import com.efarda.exception.DataNotFound;
 import com.efarda.service.ParameterService;
-import com.efarda.service.UserService;
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/parameter")
@@ -27,6 +24,11 @@ class ParameterController {
     @GetMapping("/group/{group-id}")
     List<Parameter> getParametersByGroupId(@PathVariable("group-id") Long groupId) {
         return parameterService.getParameterByGroupId(groupId);
+    }
+
+    @GetMapping("/group/cache/{group-id}")
+    Map<Long, Parameter> getCacheParametersByGroupId(@PathVariable("group-id") Long groupId) {
+        return parameterService.getParameterMap(groupId);
     }
 
     @GetMapping("/{id}")
