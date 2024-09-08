@@ -1,5 +1,7 @@
 databaseChangeLog:
-  - includeAll:
-      path: classpath:db/changelog/2024/
+  - include:
+      file: classpath:db/changelog/2024/0901-add-user-table.xml
+  - include:
+      file: classpath:db/changelog/2024/0908-add-parameter-table.xml
 
 #0901-add-user-table.xml
